@@ -1,0 +1,53 @@
+{
+  "name": "static-site-host",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "engines": {
+    "node": ">=20.5.0"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "lint": "eslint . --no-error-on-unmatched-pattern",
+    "preview": "vite preview",
+    "preinstall": "npx npm-force-resolutions"
+  },
+  "resolutions": {
+    "@typescript-eslint/scope-manager": "8.26.0",
+    "@typescript-eslint/type-utils": "8.26.0",
+    "@typescript-eslint/types": "8.26.0",
+    "@typescript-eslint/typescript-estree": "8.26.0",
+    "@typescript-eslint/utils": "8.26.0",
+    "@typescript-eslint/visitor-keys": "8.26.0",
+    "typescript-eslint": "8.26.0"
+  },
+  "dependencies": {
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.0",
+    "@mui/icons-material": "^6.4.8",
+    "@mui/material": "^6.4.8",
+    "oidc-client-ts": "^3.2.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "react-dropzone": "^14.3.8",
+    "react-router-dom": "^6.30.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.21.0",
+    "@types/react": "^19.0.10",
+    "@types/react-dom": "^19.0.4",
+    "@types/react-dropzone": "^5.1.0",
+    "@types/react-router-dom": "^5.3.3",
+    "@vitejs/plugin-react-swc": "^3.8.0",
+    "dotenv": "^16.4.7",
+    "eslint": "^9.21.0",
+    "eslint-plugin-react-hooks": "^5.1.0",
+    "eslint-plugin-react-refresh": "^0.4.19",
+    "globals": "^15.15.0",
+    "npm-force-resolutions": "^0.0.10",
+    "typescript": "~5.7.2",
+    "typescript-eslint": "^8.24.1",
+    "vite": "^6.2.0"
+  }
+}
