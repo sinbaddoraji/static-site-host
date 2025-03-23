@@ -1,4 +1,4 @@
-import { UserManager, WebStorageStateStore, User } from 'oidc-client-ts';
+import { UserManager, WebStorageStateStore } from 'oidc-client-ts';
 
 // Helper function to get environment variables with fallback values
 const getEnvVar = (key: string, defaultValue: string = ''): string => {

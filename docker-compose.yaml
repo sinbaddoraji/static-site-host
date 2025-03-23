@@ -1,0 +1,50 @@
+version: '3.8'
+
+services:
+  # Frontend service
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    environment:
+      - VITE_OIDC_AUTHORITY=https://sso.garri.ovh/
+      - VITE_OIDC_CLIENT_ID=312365402212597763
+      - VITE_OIDC_REDIRECT_URI=/callback
+      - VITE_OIDC_RESPONSE_TYPE=code
+      - VITE_OIDC_SCOPE=openid profile email
+      - VITE_OIDC_POST_LOGOUT_REDIRECT_URI=/
+      - VITE_OIDC_SILENT_REDIRECT_URI=/silent-renew.html
+      - VITE_OIDC_AUTOMATIC_SILENT_RENEW=true
+      - VITE_OIDC_LOAD_USER_INFO=true
+      - VITE_API_URL=http://localhost:4000
+    depends_on:
+      - backend
+
+  # Backend service
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+    ports:
+      - "4000:4000"
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+      - site_files:/app/site_files
+    environment:
+      - PORT=4000
+      - NODE_ENV=development
+      - SKIP_AUTH=true
+      - SITE_FILES_DIR=./site_files
+      - PUBLIC_SITE_URL=http://localhost:4000
+      - AUTH_ISSUER=https://sso.garri.ovh/
+      - AUTH_AUDIENCE=312365402212597763
+      - CORS_ORIGIN=http://localhost:3000
+
+volumes:
+  site_files:

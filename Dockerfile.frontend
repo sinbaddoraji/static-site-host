@@ -1,0 +1,27 @@
+FROM node:20.11.1
+
+WORKDIR /app
+
+# Install dependencies first (for better caching)
+COPY frontend/package*.json ./
+RUN npm install --legacy-peer-deps
+
+# Copy all frontend files
+COPY frontend/ ./
+
+# Create necessary TypeScript files if they don't exist
+RUN if [ ! -f "tsconfig.json" ]; then \
+      echo '{ "compilerOptions": { "target": "ES2020", "useDefineForClassFields": true, "lib": ["ES2020", "DOM", "DOM.Iterable"], "module": "ESNext", "skipLibCheck": true, "moduleResolution": "bundler", "allowImportingTsExtensions": true, "resolveJsonModule": true, "isolatedModules": true, "noEmit": true, "jsx": "react-jsx", "strict": true, "noUnusedLocals": true, "noUnusedParameters": true, "noFallthroughCasesInSwitch": true }, "include": ["src"] }' > tsconfig.json; \
+    fi
+
+# Make sure vite-env.d.ts exists in src directory
+RUN mkdir -p src && \
+    if [ ! -f "src/vite-env.d.ts" ]; then \
+      echo '/// <reference types="vite/client" />\n\ninterface ImportMetaEnv {\n  readonly VITE_OIDC_AUTHORITY: string\n  readonly VITE_OIDC_CLIENT_ID: string\n  readonly VITE_OIDC_CLIENT_SECRET: string\n  readonly VITE_OIDC_REDIRECT_URI: string\n  readonly VITE_OIDC_RESPONSE_TYPE: string\n  readonly VITE_OIDC_SCOPE: string\n  readonly VITE_OIDC_POST_LOGOUT_REDIRECT_URI: string\n  readonly VITE_OIDC_SILENT_REDIRECT_URI: string\n  readonly VITE_OIDC_AUTOMATIC_SILENT_RENEW: string\n  readonly VITE_OIDC_LOAD_USER_INFO: string\n  readonly VITE_API_URL: string\n}\n\ninterface ImportMeta {\n  readonly env: ImportMetaEnv\n}' > src/vite-env.d.ts; \
+    fi
+
+# Expose the development port
+EXPOSE 3000
+
+# Start the development server
+CMD ["npm", "run", "dev", "--", "--host", "0.0.0.0"]
