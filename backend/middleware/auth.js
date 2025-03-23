@@ -16,9 +16,15 @@ const auth = jwt({
 
 // Add a conditional auth middleware for development
 const conditionalAuth = (req, res, next) => {
+  // Force skip auth in development mode - added console log for debugging
+  console.log("Auth middleware check - NODE_ENV:", process.env.NODE_ENV, "SKIP_AUTH:", process.env.SKIP_AUTH);
+  
   if (process.env.NODE_ENV === 'development' && process.env.SKIP_AUTH === 'true') {
+    console.log("Auth middleware bypassed in development mode");
     return next();
   }
+  
+  console.log("Auth middleware active - JWT will be validated");
   return auth(req, res, next);
 };
 
