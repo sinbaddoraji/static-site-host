@@ -21,7 +21,7 @@ services:
       - VITE_OIDC_SILENT_REDIRECT_URI=/silent-renew.html
       - VITE_OIDC_AUTOMATIC_SILENT_RENEW=true
       - VITE_OIDC_LOAD_USER_INFO=true
-      - VITE_API_URL=http://localhost:4000
+      - VITE_API_URL=http://localhost:4000/api
     depends_on:
       - backend
 
